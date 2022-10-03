@@ -60,12 +60,12 @@ dashboardPage(
         column(5,
                box(title = "Trend By Geography", status = "white", height = 342,
                    width = 12, icon = icon("table"), solidHeader = TRUE,
-                   maximizable = TRUE,
-                   withSpinner(dataTableOutput("geo_tbl1")))),
+                   maximizable = FALSE,
+                   withSpinner(dataTableOutput("geo_tbl1", height = 200)))),
         column(7,
                box(title = "Top Related Searches", status = "white", height = 342, 
                    width = 12, icon = icon("chart-bar"), solidHeader = TRUE,
-                   maximizable = TRUE,
+                   maximizable = FALSE,
                    withSpinner(plotlyOutput("fig3_bar_plot", width = "auto", height = 300))))
       )
       

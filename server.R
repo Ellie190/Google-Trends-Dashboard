@@ -103,7 +103,11 @@ server <- function(input, output, session){
     DT::datatable(location_tbl,
                   rownames = T,
                   filter = "top",
-                  options = list(pageLength = 2, scrollX = TRUE, info = FALSE))
+                  extensions = 'Scroller',
+                  options = list(pageLength = 2, scrollY = 120,
+                                 scroller = TRUE, info = TRUE,
+                                 deferRender = TRUE,
+                                 searching = FALSE))
   })
   
   # Top Related Searches ----
