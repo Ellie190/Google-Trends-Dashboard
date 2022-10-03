@@ -10,3 +10,7 @@ https://ds-analytics.shinyapps.io/Google-Trends-Dashboard/
 
 ## Dashboard
 ![Dashboard Image](https://github.com/Ellie190/Google-Trends-Dashboard/blob/main/dashboard_img.png)
+
+## Dashboard Report
+![Report Image](https://github.com/Ellie190/Google-Trends-Dashboard/blob/main/report_img.png)
+
