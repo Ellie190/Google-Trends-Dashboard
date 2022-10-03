@@ -1,0 +1,129 @@
+---
+title: |
+  ![](logo.png){width=2.5in}  
+  Google Trends Report
+author: "University and Online Learning Technology Search Interests"
+date: "`r Sys.Date()`"
+output: 
+  html_document:
+    theme: flatly
+params:
+  search_terms: !r c("moodle", "Blackboard Learn", "canvas lms")
+  search_period: "now 7-d"
+---
+
+<style type="text/css">
+
+h1.title {
+  text-align: center;
+}
+h4.author { /* Header 4 - and the author and data headers use this too  */
+  text-align: center;
+}
+h4.date { /* Header 4 - and the author and data headers use this too  */
+  text-align: center;
+}
+</style>
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  echo    = FALSE, 
+  message = FALSE, 
+  warning = FALSE
+)
+
+# Google Trends API
+library(gtrendsR)
+
+# Core 
+library(lubridate)
+library(tidyverse)
+library(tidyquant)
+library(tidygeocoder)
+library(plotly)
+
+# File System
+library(fs)
+```
+
+# Report Search Terms 
+
+```{r}
+tibble("Search Term(s)" = params$search_terms) %>% knitr::kable()
+```
+
+
+```{r}
+gtrends_lst <- gtrendsR::gtrends(params$search_terms,
+                                 geo = "ZA",
+                                 time = params$search_period)
+```
+
+
+```{r, fig.width=10}
+ggplotly(
+gtrends_lst %>% 
+  pluck("interest_over_time") %>% 
+  mutate(hits = as.numeric(hits)) %>% 
+  as_tibble() %>% 
+  ggplot(aes(date, hits, color = keyword)) +
+  geom_line() +
+  geom_smooth(span = 0.3, se = FALSE) +
+  theme_tq() +
+  scale_color_tq() +
+   labs(title = "Keyword Trends Over Time")
+)
+```
+
+
+# Trends by Geography
+
+```{r}
+location_tbl <- gtrends_lst %>% 
+  pluck("interest_by_region") %>% 
+  select(location, hits, keyword)
+
+DT::datatable(location_tbl,
+              rownames = T,
+              filter = "top",
+              options = list(pageLength = 9, scrollX = TRUE, info = FALSE))
+```
+
+
+# Top Related Searches
+
+```{r, fig.width=10}
+n_terms <- 10
+
+top_n_related_searches_tbl <- gtrends_lst %>% 
+  pluck("related_queries") %>% 
+  as_tibble() %>% 
+  filter(related_queries == "top") %>% 
+  mutate(interest = as.numeric(subject)) %>% 
+  
+  select(keyword, value, interest) %>% 
+  group_by(keyword) %>% 
+  arrange(desc(interest)) %>% 
+  slice(1:n_terms) %>% 
+  ungroup() %>% 
+  
+  mutate(value = as.factor(value) %>% fct_reorder(interest))
+
+ggplotly(
+top_n_related_searches_tbl %>% 
+  ggplot(aes(value, interest, color = keyword)) +
+  geom_segment(aes(xend = value, yend = 0)) +
+  geom_point() +
+  coord_flip() +
+  ylab("Interest") +
+  xlab(" ") +
+  facet_grid(rows = vars(keyword), scales = "free_y", 
+             space = "free_y") +
+  #facet_wrap(~ keyword, nrow = 1, scales = "free_y") +
+  theme_tq() +
+  scale_color_tq()
+)
+```
+
+
+
