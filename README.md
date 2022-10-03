@@ -9,4 +9,4 @@ https://ds-analytics.shinyapps.io/Google-Trends-Dashboard/
 **Libraries:** `tidyverse`, `plotly`, `gtrendsR`, `lubridate`, `tidyquant`, `DT`, `fs`, `tidygeocoder`, `shiny`, `bs4Dash`, `shinycssloaders`, `waiter`, `rmarkdown`
 
 ## Dashboard
-![Dashboard Image]()
+![Dashboard Image](https://github.com/Ellie190/Google-Trends-Dashboard/blob/main/dashboard_img.png)
