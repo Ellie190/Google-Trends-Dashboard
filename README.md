@@ -1,5 +1,5 @@
 # Google-Trends-Dashboard
-A Google Trends Dashboard that provides insights on South Africa (SA) University and Online Learning Technologies search interests overtime
+A Google Trends Dashboard that provides Google search insights on South African universities and online learning technologies
 
 ## Application Access Link
 https://ds-analytics.shinyapps.io/Google-Trends-Dashboard/
